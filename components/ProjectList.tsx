@@ -18,5 +18,5 @@ export default function ProjectList({ projects }: ProjectListProps) {
         <ProjectCard key={project.title} {...project} />
       ))}
     </section>
-  );
+  );    
 }
