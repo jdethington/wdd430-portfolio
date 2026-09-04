@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="bg-gray-800 text-white py-4 mt-12">
       <div className="container mx-auto text-center">
         <p>
-          Copyright &copy; {new Date().getFullYear()} | Xavier Rodriguez | All
+          Copyright &copy; {new Date().getFullYear()} | Jacob Ethington | All
           rights reserved.
         </p>
       </div>
