@@ -6,7 +6,7 @@ const projects = [
     description:
       "This is a modern Next.js + React + TypeScript + Tailwind CSS portfolio project, bootstrapped with create-next-app. It is designed for easy deployment on Vercel.",
     technologies: ["React", "TypeScript", "Tailwind CSS", "Next.js"],
-    link: "https://github.com/jdethington/wdd430-portfolio",
+    link: "",
   },
   {
     title: "FindMovie",
