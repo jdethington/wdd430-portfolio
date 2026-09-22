@@ -8,6 +8,7 @@ interface Project {
 import { getProjects } from "@/lib/projects-db";
 
 export default async function opensourceProjectsPage() {
+  // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate a delay for loading state
   const projects: Project[] = await getProjects("opensource");
 
   return (
