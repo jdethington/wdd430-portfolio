@@ -5,11 +5,10 @@ interface Project {
   technologies: string[];
 }
 
+import { getProjects } from "@/lib/projects-db";
+
 export default async function ProjectsPage() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects`,
-  );
-  const projects: Project[] = await response.json();
+  const projects: Project[] = await getProjects();
 
   return (
     <section className="container mx-auto px-4 py-8">
@@ -25,7 +24,10 @@ export default async function ProjectsPage() {
             <h2 className="text-2xl font-semibold mb-2">{project.title}</h2>
             <p className="text-gray-700 mb-4">{project.description}</p>
             <p className="text-gray-500 mb-4">
-              <strong>Technologies:</strong> {project.technologies.join(", ")}
+              <strong>Technologies:</strong>{" "}
+              {Array.isArray(project.technologies)
+                ? project.technologies.join(", ")
+                : String(project.technologies ?? "")}
             </p>
           </div>
         ))}

@@ -5,11 +5,10 @@ interface Project {
   technologies: string[];
 }
 
+import { getProjects } from "@/lib/projects-db";
+
 export default async function schoolProjectsPage() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects?type=school`,
-  );
-  const projects: Project[] = await response.json();
+  const projects: Project[] = await getProjects("school");
 
   return (
     <section className="container mx-auto px-4 py-8">
