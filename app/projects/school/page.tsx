@@ -1,13 +1,13 @@
-import { getProjects } from "@/lib/projects-db";
+// import { getProjects } from "@/lib/projects-db";
 import { Suspense } from "react";
 import SchoolProjectList from "./SchoolProjectList";
 
-interface Project {
-  id: string | number;
-  title: string;
-  description: string;
-  technologies: string[];
-}
+// interface Project {
+//   id: string | number;
+//   title: string;
+//   description: string;
+//   technologies: string[];
+// }
 
 function ProjectCardSkeleton() {
   return (

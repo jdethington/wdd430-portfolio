@@ -1,3 +1,7 @@
+import ProjectSearch from "@/components/ProjectSearch";
+import Pagination from "@/components/Pagination";
+import { fetchFilteredProjects, fetchProjectsPages } from "@/lib/projects-db";
+
 interface Project {
   id: string | number;
   title: string;
@@ -5,16 +9,29 @@ interface Project {
   technologies: string[];
 }
 
-import { getProjects } from "@/lib/projects-db";
+export default async function ProjectsPage(props: {
+  searchParams?: Promise<{ query?: string; page?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || "";
+  const currentPage = Number(searchParams?.page) || 1;
 
-export default async function ProjectsPage() {
-  const projects: Project[] = await getProjects();
+  const { projects }: { projects: Project[] } = await fetchFilteredProjects(
+    query,
+    currentPage,
+  );
+  const totalPages = await fetchProjectsPages(query);
 
   return (
     <section className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-4 text-center py-12">
         Projects Overview
       </h1>
+
+      <div className="flex justify-center mb-6">
+        <ProjectSearch />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {projects.map((project: Project) => (
           <div
@@ -32,6 +49,8 @@ export default async function ProjectsPage() {
           </div>
         ))}
       </div>
+
+      <Pagination totalPages={totalPages} />
     </section>
   );
 }
