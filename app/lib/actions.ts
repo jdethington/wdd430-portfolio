@@ -39,7 +39,8 @@ export async function createProject(formData: FormData) {
   const { title, description, type, technologies, link } = parsed.data;
   // const techArray = parseTechnologies(technologies);
 
-  await sql`
+  try {
+    await sql`
     INSERT INTO projects (title, description, type, technologies, link)
     VALUES (
       ${title}, 
@@ -47,8 +48,12 @@ export async function createProject(formData: FormData) {
       ${type}, 
       ${technologies}, 
       ${link || null}
-    )
-  `;
+      )
+      `;
+  } catch (error) {
+    console.error("Error creating project:", error);
+    throw new Error("Failed to create project. Please try again later.");
+  }
 
   revalidatePath("/projects");
   revalidatePath("/projects/opensource");
@@ -73,16 +78,22 @@ export async function updateProject(id: string, formData: FormData) {
   // const techArray = parseTechnologies(technologies);
   const projectId = Number(id);
 
-  await sql`
+  try {
+    await sql`
     UPDATE projects
     SET
-      title = ${title}, 
-      description = ${description}, 
-      type = ${type},
-      technologies = ${technologies},
-      link = ${link || null}
+    title = ${title}, 
+    description = ${description}, 
+    type = ${type},
+    technologies = ${technologies},
+    link = ${link || null}
     WHERE id = ${projectId}
-  `;
+    `;
+  } catch (error) {
+    console.error("Error updating project:", error);
+    throw new Error("Failed to update project. Please try again later.");
+  }
+
   revalidatePath("/projects");
   revalidatePath("/projects/opensource");
   revalidatePath("/projects/school");
