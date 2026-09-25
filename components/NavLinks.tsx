@@ -13,20 +13,26 @@ const links = [
 
 export default function NavLinks() {
   const pathname = usePathname();
+
   return (
-    <nav
-      aria-label="Primary"
-      className="max-w-4xl mx-auto px-4 flex justify-between items-center"
-    >
-      <ul className="flex gap-6">
+    <nav aria-label="Primary">
+      <ul className="flex flex-wrap items-center gap-2">
         {links.map((link) => {
-          const isActive = pathname === link.href;
+          const isActive =
+            link.href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(link.href);
+
           return (
             <li key={link.href}>
               <Link
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
-                className={isActive ? "active" : ""}
+                className={`inline-block px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer ${
+                  isActive
+                    ? "bg-blue-600 text-white shadow-sm ring-1 ring-blue-500/50"
+                    : "text-slate-200 hover:text-white hover:bg-slate-800 active:scale-95"
+                }`}
               >
                 {link.name}
               </Link>

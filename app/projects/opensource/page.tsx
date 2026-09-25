@@ -1,3 +1,5 @@
+import { getProjects } from "@/lib/projects-db";
+
 interface Project {
   id: string | number;
   title: string;
@@ -6,10 +8,8 @@ interface Project {
 }
 
 export default async function opensourceProjectsPage() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/projects?type=opensource`,
-  );
-  const projects: Project[] = await response.json();
+  // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate a delay for loading state
+  const projects: Project[] = await getProjects("opensource");
 
   return (
     <section className="container mx-auto px-4 py-8">

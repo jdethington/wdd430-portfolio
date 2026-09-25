@@ -21,7 +21,7 @@ const aboutItems = [
 
 export default function About() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8">
       <section className="text-center py-12">
         <h2 className="text-3xl font-bold mb-4">About Me</h2>
         <p className="text-large text-gray-700">
@@ -32,6 +32,6 @@ export default function About() {
         </p>
       </section>
       <AboutList aboutItems={aboutItems} />
-    </main>
+    </div>
   );
 }
