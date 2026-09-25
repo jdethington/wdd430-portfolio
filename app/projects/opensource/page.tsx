@@ -1,11 +1,11 @@
+import { getProjects } from "@/lib/projects-db";
+
 interface Project {
   id: string | number;
   title: string;
   description: string;
   technologies: string[];
 }
-
-import { getProjects } from "@/lib/projects-db";
 
 export default async function opensourceProjectsPage() {
   // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate a delay for loading state
