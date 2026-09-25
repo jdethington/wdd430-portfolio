@@ -8,25 +8,8 @@ export interface Project {
   type: "opensource" | "school";
   technologies: string[];
   link?: string;
+  year_completed?: number | null;
 }
-
-// export const projects: Project[] = [
-//   {
-//     id: 1,
-//     title: "My First Open Source Contribution",
-//     description: "A bug fix contributed to a popular library.",
-//     type: "opensource",
-//     technologies: ["TypeScript", "React"],
-//     link: "https://github.com/example/repo",
-//   },
-//   {
-//     id: 2,
-//     title: "Database Design Final Project",
-//     description: "An ER diagram and normalized schema for a library system.",
-//     type: "school",
-//     technologies: ["PostgreSQL", "SQL"],
-//   },
-// ];
 
 export async function getProjects(type?: string | null): Promise<Project[]> {
   if (type) {

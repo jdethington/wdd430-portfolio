@@ -14,6 +14,7 @@ export default async function EditProjectPage(props: {
     notFound();
   }
 
+  // Bind id first; useActionState will supply prevState + formData
   const updateProjectWithId = updateProject.bind(null, id);
 
   return (
@@ -30,6 +31,10 @@ export default async function EditProjectPage(props: {
             ? project.technologies.join(", ")
             : String(project.technologies ?? ""),
           link: project.link ?? "",
+          year_completed:
+            project.year_completed == null
+              ? undefined
+              : Number(project.year_completed),
         }}
       />
     </section>
