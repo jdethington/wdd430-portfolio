@@ -1,4 +1,5 @@
 import { sql } from "@vercel/postgres";
+import type { ProjectSearchParams, SearchResult } from "@/types/search";
 
 export interface Project {
   id: number;
@@ -49,19 +50,68 @@ const ITEMS_PER_PAGE = 6;
 export async function fetchFilteredProjects(
   query: string,
   currentPage: number,
-): Promise<{ projects: Project[] }> {
+  type?: string | null,
+): Promise<SearchResult<Project>> {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   const q = `%${query}%`;
-  const { rows } = await sql<Project>`
-    SELECT * FROM projects
-    WHERE
-      title ILIKE ${q} 
-      OR description ILIKE ${q}
-      OR array_to_string(technologies, ',') ILIKE ${q}
-    ORDER BY id
-    LIMIT ${ITEMS_PER_PAGE} 
-    OFFSET ${offset}`;
-  return { projects: rows };
+
+  const countPromise = type
+    ? sql<{ count: string }>`
+        SELECT COUNT(*)::text AS count FROM projects
+        WHERE type = ${type}
+          AND (
+            title ILIKE ${q}
+            OR description ILIKE ${q}
+            OR array_to_string(technologies, ',') ILIKE ${q}
+          )
+      `
+    : sql<{ count: string }>`
+        SELECT COUNT(*)::text AS count FROM projects
+        WHERE
+          title ILIKE ${q}
+          OR description ILIKE ${q}
+          OR array_to_string(technologies, ',') ILIKE ${q}
+      `;
+
+  const rowsPromise = type
+    ? sql<Project>`
+        SELECT * FROM projects
+        WHERE type = ${type}
+          AND (
+            title ILIKE ${q}
+            OR description ILIKE ${q}
+            OR array_to_string(technologies, ',') ILIKE ${q}
+          )
+        ORDER BY id
+        LIMIT ${ITEMS_PER_PAGE}
+        OFFSET ${offset}
+      `
+    : sql<Project>`
+        SELECT * FROM projects
+        WHERE
+          title ILIKE ${q}
+          OR description ILIKE ${q}
+          OR array_to_string(technologies, ',') ILIKE ${q}
+        ORDER BY id
+        LIMIT ${ITEMS_PER_PAGE}
+        OFFSET ${offset}
+      `;
+
+  const [countResult, rowsResult] = await Promise.all([
+    countPromise,
+    rowsPromise,
+  ]);
+  const total = Number(countResult.rows[0]?.count ?? 0);
+  const totalPages = Math.max(1, Math.ceil(total / ITEMS_PER_PAGE));
+
+  return {
+    results: rowsResult.rows,
+    total,
+    page: currentPage,
+    limit: ITEMS_PER_PAGE,
+    totalPages,
+    hasNextPage: currentPage < totalPages,
+  };
 }
 
 export async function fetchProjectsPages(query: string): Promise<number> {
