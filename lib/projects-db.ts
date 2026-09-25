@@ -1,5 +1,5 @@
 import { sql } from "@vercel/postgres";
-import type { ProjectSearchParams, SearchResult } from "@/types/search";
+import type { SearchResult } from "@/types/search";
 
 export interface Project {
   id: number;

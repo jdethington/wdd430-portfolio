@@ -1,6 +1,6 @@
 import ProjectSearch from "@/components/ProjectSearch";
 import Pagination from "@/components/Pagination";
-import { fetchFilteredProjects, fetchProjectsPages } from "@/lib/projects-db";
+import { fetchFilteredProjects } from "@/lib/projects-db";
 import type { ProjectSearchParams } from "@/types/search";
 
 interface Project {
