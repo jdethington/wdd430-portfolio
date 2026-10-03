@@ -5,6 +5,8 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { auth, signIn, signOut } from "@/auth";
+import { AuthError } from "next-auth";
 
 const currentYear = new Date().getFullYear();
 
@@ -51,11 +53,18 @@ function parseTechnologies(technologies: string): string[] {
     .filter(Boolean);
 }
 
+async function requireOwnerSession() {
+  const session = await auth();
+  if (!session?.user) throw new Error("Not authenticated");
+  return session;
+}
+
 // Create a new project
 export async function createProject(
   prevState: State,
   formData: FormData,
 ): Promise<State> {
+  await requireOwnerSession();
   const values = {
     title: String(formData.get("title") ?? ""),
     description: String(formData.get("description") ?? ""),
@@ -107,10 +116,9 @@ export async function createProject(
     };
   }
 
+  revalidatePath("/dashboard/projects");
   revalidatePath("/projects");
-  revalidatePath("/projects/opensource");
-  revalidatePath("/projects/school");
-  redirect("/projects");
+  redirect("/dashboard/projects");
 }
 
 // Update an existing project
@@ -119,6 +127,7 @@ export async function updateProject(
   prevState: State,
   formData: FormData,
 ): Promise<State> {
+  await requireOwnerSession();
   const values = {
     title: String(formData.get("title") ?? ""),
     description: String(formData.get("description") ?? ""),
@@ -170,11 +179,11 @@ export async function updateProject(
     };
   }
 
-  revalidatePath("/projects");
-  revalidatePath("/projects/opensource");
-  revalidatePath("/projects/school");
-  revalidatePath(`/projects/${id}/edit`);
-  redirect("/projects");
+  revalidatePath("/dashboard/projects");
+  revalidatePath("/dashboard/projects/opensource");
+  revalidatePath("/dashboard/projects/school");
+  revalidatePath(`/dashboard/projects/${id}/edit`);
+  redirect("/dashboard/projects");
 }
 
 // Delete a project
@@ -182,6 +191,7 @@ export async function deleteProject(
   id: string,
   _formData?: FormData,
 ): Promise<void> {
+  await requireOwnerSession();
   const projectId = Number(id);
   try {
     await sql`DELETE FROM projects WHERE id = ${projectId}`;
@@ -190,7 +200,32 @@ export async function deleteProject(
     throw new Error("Failed to delete project. Please try again later.");
   }
 
-  revalidatePath("/projects");
-  revalidatePath("/projects/opensource");
-  revalidatePath("/projects/school");
+  revalidatePath("/dashboard/projects");
+  revalidatePath("/dashboard/projects/opensource");
+  revalidatePath("/dashboard/projects/school");
+}
+
+// Authentication action for signing in a user
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Invalid email or password.";
+        default:
+          return "Something went wrong. Please try again later.";
+      }
+    }
+    throw error; // needed so successful login can redirect
+  }
+}
+
+export async function handleSignOut() {
+  await signOut({ redirect: false });
+  redirect("/");
 }

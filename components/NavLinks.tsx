@@ -9,6 +9,7 @@ const links = [
   { name: "Projects", href: "/projects" },
   { name: "Contact", href: "/contact" },
   { name: "API", href: "/api/hello" },
+  { name: "Login", href: "/login" },
 ];
 
 export default function NavLinks() {

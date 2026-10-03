@@ -13,7 +13,7 @@ export const authConfig = {
       const isProtected = nextUrl.pathname.startsWith("/dashboard");
 
       if (isProtected) {
-        if (!isLoggedIn) return true;
+        if (isLoggedIn) return true;
         return false; // Redirect to /login if not logged in
       }
 

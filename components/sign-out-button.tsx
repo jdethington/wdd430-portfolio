@@ -1,14 +1,8 @@
-// components/sign-out-button.tsx
-import { singOut } from "@/auth";
+import { handleSignOut } from "@/app/lib/actions";
 
 export function SignOutButton() {
   return (
-    <form
-      action={async () => {
-        "use server";
-        await singOut({ redirectTo: "/" });
-      }}
-    >
+    <form action={handleSignOut}>
       <button type="submit">Sign Out</button>
     </form>
   );
