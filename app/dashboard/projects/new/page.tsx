@@ -1,5 +1,10 @@
 import { createProject } from "@/app/lib/actions";
 import ProjectForm from "@/components/ProjectForm";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Create Project",
+};
 
 export default function CreateProjectPage() {
   return (

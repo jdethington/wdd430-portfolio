@@ -1,4 +1,5 @@
 import { getProjects } from "@/lib/projects-db";
+import type { Metadata } from "next";
 
 interface Project {
   id: string | number;
@@ -6,6 +7,10 @@ interface Project {
   description: string;
   technologies: string[];
 }
+
+export const metadata: Metadata = {
+  title: "Open Source",
+};
 
 export default async function opensourceProjectsPage() {
   // await new Promise((resolve) => setTimeout(resolve, 3000)); // Simulate a delay for loading state

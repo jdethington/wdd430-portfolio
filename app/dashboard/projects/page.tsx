@@ -4,6 +4,7 @@ import DeleteProjectButton from "@/components/DeleteProjectButton";
 import { fetchFilteredProjects } from "@/lib/projects-db";
 import type { ProjectSearchParams } from "@/types/search";
 import Link from "next/link";
+import { Metadata } from "next";
 
 interface Project {
   id: string | number;
@@ -11,6 +12,9 @@ interface Project {
   description: string;
   technologies: string[];
 }
+export const metadata: Metadata = {
+  title: "Projects",
+};
 
 export default async function ProjectsPage(props: {
   searchParams?: Promise<ProjectSearchParams>;

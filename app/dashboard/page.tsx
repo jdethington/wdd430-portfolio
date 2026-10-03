@@ -1,4 +1,5 @@
 import ProjectList from "@/components/ProjectList";
+import { Metadata } from "next";
 
 const projects = [
   {
@@ -23,6 +24,10 @@ const projects = [
     link: "https://github.com/jdethington/cse340",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "Dashboard",
+};
 
 export default function Home() {
   return (

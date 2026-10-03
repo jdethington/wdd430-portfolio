@@ -3,6 +3,7 @@ import Pagination from "@/components/Pagination";
 import DeleteProjectButton from "@/components/DeleteProjectButton";
 import { fetchFilteredProjects } from "@/lib/projects-db";
 import type { ProjectSearchParams } from "@/types/search";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 interface Project {
@@ -11,6 +12,10 @@ interface Project {
   description: string;
   technologies: string[];
 }
+
+export const metadata: Metadata = {
+  title: "Projects",
+};
 
 export default async function ProjectsPage(props: {
   searchParams?: Promise<ProjectSearchParams>;

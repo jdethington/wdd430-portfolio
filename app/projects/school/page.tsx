@@ -1,13 +1,6 @@
-// import { getProjects } from "@/lib/projects-db";
 import { Suspense } from "react";
 import SchoolProjectList from "./SchoolProjectList";
-
-// interface Project {
-//   id: string | number;
-//   title: string;
-//   description: string;
-//   technologies: string[];
-// }
+import type { Metadata } from "next";
 
 function ProjectCardSkeleton() {
   return (
@@ -24,6 +17,10 @@ function ProjectCardSkeleton() {
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: "School",
+};
 
 export default async function schoolProjectsPage() {
   // const projects: Project[] = await getProjects("school");

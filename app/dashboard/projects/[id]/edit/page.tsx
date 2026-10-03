@@ -2,6 +2,11 @@ import { getProjectById } from "@/lib/projects-db";
 import { updateProject } from "@/app/lib/actions";
 import ProjectForm from "@/components/ProjectForm";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Edit Project",
+};
 
 export default async function EditProjectPage(props: {
   params: Promise<{ id: string }>;

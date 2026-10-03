@@ -1,4 +1,5 @@
 import AboutList from "@/components/AboutList";
+import type { Metadata } from "next";
 
 const aboutItems = [
   {
@@ -18,6 +19,10 @@ const aboutItems = [
     link: "https://jdethington.github.io/wdd231/finalproject/index.html",
   },
 ];
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default function About() {
   return (
