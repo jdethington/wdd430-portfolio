@@ -1,9 +1,11 @@
-import { handleSignOut } from "@/app/lib/actions";
+"use client";
+
+import { signOut } from "next-auth/react";
 
 export function SignOutButton() {
   return (
-    <form action={handleSignOut}>
-      <button type="submit">Sign Out</button>
-    </form>
+    <button type="button" onClick={() => signOut({ redirectTo: "/" })}>
+      Sign Out
+    </button>
   );
 }
